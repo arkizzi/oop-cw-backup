@@ -445,7 +445,16 @@ public class Formula1ChampionshipManager{
                 row[x][3] = Pos;
                 String numRc = String.valueOf(BackupDriverArray[x].getTDI().getStats().getNor());
                 row[x][4] = numRc;
-                String numPnt = String.valueOf(BackupDriverArray[x].getTDI().getStats().getPnt());
+                String numPnt;
+
+                if (BackupDriverArray[x].getTDI().getStats().getPnt() > 99){
+                    numPnt = String.valueOf(BackupDriverArray[x].getTDI().getStats().getPnt());
+                }else if (BackupDriverArray[x].getTDI().getStats().getPnt() > 9) {
+                    numPnt = "0"+String.valueOf(BackupDriverArray[x].getTDI().getStats().getPnt());
+                }else{
+                    numPnt = "00"+String.valueOf(BackupDriverArray[x].getTDI().getStats().getPnt());
+                }
+
                 row[x][5] = numPnt;
                 String F = String.valueOf(BackupDriverArray[x].getTDI().getStats().getF());
                 row[x][6] = F;
@@ -508,4 +517,5 @@ public class Formula1ChampionshipManager{
         System.out.printf(TFD, "No. of 3rd Place        ",DriverArray[m].getTDI().getStats().getT());
         System.out.printf("\n└────────────────────────────────────────────────────┘");
     }
+
 }
