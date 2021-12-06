@@ -6,9 +6,12 @@ import java.io.FileInputStream;
 
 public class Formula1ChampionshipManager{
     //Initializing public Variables and Arrays
+    public static final int drvNum = 12;
+    public static final int raceNum = 10;
+
     public static Scanner in = new Scanner(System.in); 
-    public static Team[] DriverArray = new Team[12]; //There can only be 12 racers max in a race
-    public static Race[] RacesArray = new Race[5]; //There can only be 5 races in a Tournament
+    public static Team[] DriverArray = new Team[drvNum]; //There can only be 12 racers max in a race
+    public static Race[] RacesArray = new Race[raceNum]; //There can only be 5 races in a Tournament
     public static int driverCounter = 0; //counts the drivers
     public static int racesCounter = 1; //counts the races
 
@@ -19,11 +22,11 @@ public class Formula1ChampionshipManager{
     }
 
     private static void initialise(Team PosArray[], Race rArray[]){ //Initializer to set the values as null
-        for (int n = 0; n < 12; n++){
+        for (int n = 0; n < DriverArray.length; n++){
             PosArray[n] = new Team("n", new Driver("n", "n", new Formula1Driver(0)));
             PosArray[n].InitializerRace();
         }
-        for (int z=0; z < 5; z++){
+        for (int z=0; z < RacesArray.length; z++){
             rArray[z] = new Race("z", "z");
         }
     }
@@ -90,8 +93,8 @@ public class Formula1ChampionshipManager{
     }
 
     public static void addRacers(){ //Function to add the drivers
-        if (driverCounter==12){
-            System.out.print("\n All 12 Positions contains Drivers already! \n"); //Checks if all 12 slots are occupied
+        if (driverCounter==DriverArray.length){
+            System.out.print("\n All "+ drvNum+ " Positions contains Drivers already! \n"); //Checks if all 12 slots are occupied
             return;
         }
 
@@ -106,7 +109,7 @@ public class Formula1ChampionshipManager{
             int check = 0;
             System.out.print("\n Enter Driver's Team : ");
             DrvdrvTeam = in.nextLine();
-            for (int n =0; n < 12; n++){
+            for (int n =0; n < DriverArray.length; n++){
                 if (DriverArray[n].getTNa().equals(DrvdrvTeam.toLowerCase())){ //Sets everything to lowercase to catch typos
                     check++;
                 }
@@ -123,13 +126,13 @@ public class Formula1ChampionshipManager{
         while (posCount){ 
             System.out.print("\n Enter the Position the Driver was placed in the race : ");
             DrvdrvPos = Integer.parseInt(in.nextLine()); //get's the driver's position
-            if (DrvdrvPos < 0 || DrvdrvPos > 12){
+            if (DrvdrvPos < 0 || DrvdrvPos > DriverArray.length){
                 System.out.print("Invalid Range!"); //makes sure that the positions are only within the range
             }else {
                 posCount = false;
             }
         }
-        for (int n = 0; n < 12; n++) {
+        for (int n = 0; n < DriverArray.length; n++) {
             if (DriverArray[n].getTDI().getDN().equals("n")) {
                 DriverArray[n] = new Team(DrvdrvTeam, new Driver(DrvdrvName, DrvdrvLoco, new Formula1Driver(DrvdrvPos))); //set's the driver into the immediate empty index 
                 DriverArray[n].InitializerRace(); //initializes the info driver class
@@ -154,7 +157,7 @@ public class Formula1ChampionshipManager{
             while (checker){
                 System.out.print("\n Enter the number you wish to remove the Driver from : " + "\n");
                 int num = Integer.parseInt(in.nextLine());
-                if (num < 12){
+                if (num < DriverArray.length){
                     DriverArray[num] = new Team("n", new Driver("n", "n", new Formula1Driver(0))); //initializes the particular slot
                     DriverArray[num].InitializerRace(); //initializes everything in the info driver class as well
                     System.out.print("\n Driver placed " +  num +" has been removed successfully! \n");
@@ -184,7 +187,7 @@ public class Formula1ChampionshipManager{
                 System.out.print("\n" + "\n Enter the new Driver's name from number " +  DriverArray[num].getTNa() + " : "); 
                 String DrvdrvName = in.nextLine(); //gets the driver's name
     
-                if (num < 12){
+                if (num < DriverArray.length){
                     System.out.print("\n Are you sure you want to replace" + DriverArray[num].getTDI().getDN() + "from the Team? \n"
                     + "\n [yes: yes/y no: no/n] : "); 
                     String yesOrno = in.nextLine();  //double verifies if they really want to remove the driver
@@ -226,7 +229,7 @@ public class Formula1ChampionshipManager{
             while (checker){
                 System.out.print("\n" + "\n Enter the  number of the Driver you want to view : ");
                 int posNum = Integer.parseInt(in.nextLine()); //asks for the driver's number to show stats
-                if (posNum < 12){
+                if (posNum < DriverArray.length){
                     moreDriverInfo(posNum); //function which loads the statistics
                     checker = false;
                 } else{
@@ -239,12 +242,12 @@ public class Formula1ChampionshipManager{
 
     public static void addRace(){ //Adds a race to the championship
         int tempPosDrv = 0;
-        for (int z = 0; z < 5; z++){
+        for (int z = 0; z < RacesArray.length; z++){
             if (!RacesArray[z].getRN().equals("z")){ //Displays all of the existing races
                 System.out.print("\n Race Number " + z + " : " + RacesArray[z].getRN() + " || Date : " + RacesArray[z].getD() + " \n");
             }    
         }
-        if (racesCounter == 5){
+        if (racesCounter == RacesArray.length){
             System.out.print("\n All Four Races have been Compleated! \n"); //Checker to see if all the slots have been added to the race
         }else if (driverCounter < 3){
             System.out.print("\n You need to Add more Drivers first before wanting to add a Race! \n"); //The user can not add a race until there are atleast three drivers
@@ -255,13 +258,13 @@ public class Formula1ChampionshipManager{
                 System.out.print("\n Enter the Date it was held on [dd/mm/yy]: "); 
                 String datedate = in.nextLine(); //asks for the date
                 //positions
-                for (int n = 0; n < 12; n++){
+                for (int n = 0; n < DriverArray.length; n++){
                     if (!DriverArray[n].getTDI().getDN().equals("n")){
                         System.out.print("\n What position did Driver " + DriverArray[n].getTDI().getDN() //filters through the racers array
                         + " take? \n");
                         tempPosDrv = Integer.parseInt(in.nextLine()); //gets the position of each driver again
                         DriverArray[n].getTDI().getStats().setPos(tempPosDrv);
-                        for (int y = 0; y < 5; y++) {
+                        for (int y = 0; y < RacesArray.length; y++) {
                             if (DriverArray[n].getRaceInfo(y).getRaceName().equals("e")) {
                             DriverArray[n].setRaceInfo(y, new indvInfo(rcrcName, datedate, tempPosDrv)); //updates the race class
                             break;
@@ -270,7 +273,7 @@ public class Formula1ChampionshipManager{
                     }
                 }
     
-                for (int n = 0; n < 5; n++) {
+                for (int n = 0; n < RacesArray.length; n++) {
                 if (RacesArray[n].getRN().equals("z")) {
                     RacesArray[n] = new Race(rcrcName, datedate);
                     System.out.print("\n Race '" + RacesArray[n].getRN() + "' which was on " + RacesArray[n].getD() + " has been entered! \n"); //double verifies that it has been added
@@ -286,8 +289,8 @@ public class Formula1ChampionshipManager{
         if (driverCounter == 0){
             System.out.print("\n You need to Add Drivers first before wanting to Display the Table \n"); //Checks if there are Drivers Available
         } else {
-            Team[] BackupDriverArray = new Team[12]; 
-            for (int x=0; x<12; x++){
+            Team[] BackupDriverArray = new Team[DriverArray.length]; 
+            for (int x=0; x<DriverArray.length; x++){
                 BackupDriverArray[x] = DriverArray[x]; //clones the array into a backup array to not tweak with the original array's values
             }
 
@@ -318,7 +321,7 @@ public class Formula1ChampionshipManager{
             System.out.print("\n|---------------------------------------------------------------------------------------------------|");
             System.out.print("\n| Position |       Team       |    Driver Name     |  No. of Races  | No. of 1st Place |   Points   |");
             System.out.print("\n|---------------------------------------------------------------------------------------------------|");
-            for (int x = 0; x < 12; x++){
+            for (int x = 0; x < DriverArray.length; x++){
                 if (!BackupDriverArray[x].getTNa().equals("n")){
                     System.out.printf(TF,BackupDriverArray[x].getTDI().getStats().getPos(), BackupDriverArray[x].getTNa(), BackupDriverArray[x].getTDI().getDN(), BackupDriverArray[x].getTDI().getStats().getNor(), 
                     BackupDriverArray[x].getTDI().getStats().getF(), BackupDriverArray[x].getTDI().getStats().getPnt());
@@ -336,7 +339,7 @@ public class Formula1ChampionshipManager{
         in.write(String.valueOf(racesCounter)); //races count
         in.newLine();
         
-        for (int x = 0; x < 12; x++) { //Values in the Teams Class
+        for (int x = 0; x < DriverArray.length; x++) { //Values in the Teams Class
             in.write(DriverArray[x].getTNa());
             in.newLine();
             in.write(DriverArray[x].getTDI().getDN());
@@ -356,7 +359,7 @@ public class Formula1ChampionshipManager{
             in.write(String.valueOf(DriverArray[x].getTDI().getStats().getT()));
             in.newLine();
 
-            for (int y = 0; y < 5; y++){ //Values in the Drivers' Individual Info Class
+            for (int y = 0; y < RacesArray.length; y++){ //Values in the Drivers' Individual Info Class
                 in.write(DriverArray[x].getRaceInfo(y).getRaceName());  
                 in.newLine();
                 in.write(DriverArray[x].getRaceInfo(y).getDate());          
@@ -370,7 +373,7 @@ public class Formula1ChampionshipManager{
     }
     try (BufferedWriter in = new BufferedWriter(new FileWriter("RACESAVEDATA.txt"))){ //sets another txt file for the races info
  
-        for (int x = 0; x < 5; x++){  //Values in the Races Class
+        for (int x = 0; x < RacesArray.length; x++){  //Values in the Races Class
             in.write(RacesArray[x].getRN());
             in.newLine(); 
             in.write(RacesArray[x].getD());
@@ -387,7 +390,7 @@ public class Formula1ChampionshipManager{
             Scanner pull = new Scanner(new FileInputStream("DRIVERSAVEDATA.txt")); //loading txt file by pulling each value out
             driverCounter = Integer.parseInt(pull.nextLine()); //drivers count
             racesCounter = Integer.parseInt(pull.nextLine()); //races count
-            for (int x = 0; x < 12; x++) { //Values in the Teams Class
+            for (int x = 0; x < DriverArray.length; x++) { //Values in the Teams Class
                 String teamName = pull.nextLine();
                 String driverName = pull.nextLine();
                 String driverLoco = pull.nextLine();
@@ -403,7 +406,7 @@ public class Formula1ChampionshipManager{
                 DriverArray[x] = new Team(teamName, new Driver(driverName, driverLoco));
                 DriverArray[x].getTDI().setStats(new Formula1Driver(driverPos, driverPoints, driverNoRaces, driverFirst, driverSecond, driverThird));
 
-                for (int y = 0; y < 5; y++){  //Values in the Drivers' Individual Info Class
+                for (int y = 0; y < RacesArray.length; y++){  //Values in the Drivers' Individual Info Class
 
                     String rn = pull.nextLine(); 
                     String date = pull.nextLine(); 
@@ -416,7 +419,7 @@ public class Formula1ChampionshipManager{
         }
         try{
             Scanner pull = new Scanner(new FileInputStream("RACESAVEDATA.txt")); //Loads another txt file for the races info
-            for (int x = 0; x < 5; x++){ //Values in the Races Class
+            for (int x = 0; x < RacesArray.length; x++){ //Values in the Races Class
                 String raceName = pull.nextLine();
                 String raceDate = pull.nextLine();
                 RacesArray[x] = new Race(raceName, raceDate);
@@ -427,8 +430,8 @@ public class Formula1ChampionshipManager{
     
     public static String[][] loadGUI() { //Loads the Gui 
         //cloning team array
-        Team[] BackupDriverArray = new Team[12]; 
-        for (int x=0; x<12; x++){
+        Team[] BackupDriverArray = new Team[DriverArray.length]; 
+        for (int x=0; x<DriverArray.length; x++){
             BackupDriverArray[x] = DriverArray[x];
         }
 
@@ -471,13 +474,13 @@ public class Formula1ChampionshipManager{
 
     public static String[][] racesForGUI(){
         //cloning race array
-        Race[] BackupRacesArray = new Race[5]; 
-        for (int x=0; x<5; x++){
+        Race[] BackupRacesArray = new Race[RacesArray.length]; 
+        for (int x=0; x<RacesArray.length; x++){
             BackupRacesArray[x] = RacesArray[x];
         }
 
-        String races[][] = new String[5][2]; //generating a 2d array
-        for (int x = 0; x < 5; x++) {  //grabs all of the races info needed
+        String races[][] = new String[RacesArray.length][2]; //generating a 2d array
+        for (int x = 0; x < RacesArray.length; x++) {  //grabs all of the races info needed
             if (!BackupRacesArray[x].getRN().equals("z")) {
                 String drvNam = BackupRacesArray[x].getRN();
                 races[x][0] = drvNam;
@@ -490,7 +493,7 @@ public class Formula1ChampionshipManager{
 
     public static void driverDisplay(){
         driverCounter = 0;
-        for (int n = 0; n < 12; n++){
+        for (int n = 0; n < DriverArray.length; n++){
             
             if (!DriverArray[n].getTDI().getDN().equals("n")){
                 System.out.print("\n" +n + ")Driver " + DriverArray[n].getTDI().getDN() + " of the " + DriverArray[n].getTNa() + " Team" + "\n");

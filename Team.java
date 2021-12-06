@@ -6,8 +6,9 @@ public class Team { //Team class which holds all the drivers' information AND th
     private int firstPos;
     private int lastPos;
 
+    private int limit =Formula1ChampionshipManager.RacesArray.length;
     //array which holds the positions, race name and date
-    private indvInfo drvRaceInfo[] = new indvInfo[5]; //array made to store race info and position of EACH individual driver
+    private indvInfo drvRaceInfo[] = new indvInfo[limit]; //array made to store race info and position of EACH individual driver
     
     //Getters
     public String getTNa(){
@@ -35,7 +36,7 @@ public class Team { //Team class which holds all the drivers' information AND th
 
     public void InitializerRace(){ //member function which intializes the driver info class for question 3's search feature
 
-        for (int y = 0; y < 5; y++) {
+        for (int y = 0; y < limit; y++) {
             drvRaceInfo[y] = new indvInfo("e", "e", 0);
         }
         return;

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ChampionshipManager extends Formula1ChampionshipManager{
 
-    public static Team[] BackupDriverArray = new Team[12]; 
+    public static Team[] BackupDriverArray = new Team[DriverArray.length]; 
 
     //main panel [whole template referanced from : (https://stackhowto.com/how-to-update-a-row-in-jtable/)]
     private JPanel mainPanel = new JPanel(new BorderLayout());
@@ -19,7 +19,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
     public String drvName = "Driver";
 
     public ChampionshipManager(){
-        String column[]={"Name","Team", "Location", "Positions", "Num Of Races", "Points", "Third Places","Second Places","First Places"}; //initializing columns
+        String column[]={"Name","Team", "Location", "Last Race Postions", "Num Of Races", "Points", "Third Places","Second Places","First Places"}; //initializing columns
         String columnTwo[] = {"Race Name", "Race Date"};
 
         //Tables
@@ -62,11 +62,11 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                 String RNTemp = "";
                 String RDTemp = "";
                 String numRc = ""; 
-                if ( racesCounter > 4) {
+                if ( racesCounter > (RacesArray.length - 1)) {
                     tf1.setText("YOU CANNOT ADD MORE RACES");
                 } else{
 
-                    for (int x = 0; x < 5; x++) {  //generates totally random and new races!
+                    for (int x = 0; x < RacesArray.length; x++) {  //generates totally random and new races!
                         if (RacesArray[x].getRN().equals("z")) {
                             RNTemp = "Grand Prix " + String.valueOf(racesCounter); 
                             RacesArray[x].setRN(RNTemp);
@@ -80,7 +80,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                     }  
                     rand(); //randomizer function
 
-                    for (int x=0; x<12; x++){
+                    for (int x=0; x<DriverArray.length; x++){
                         BackupDriverArray[x].getTDI().getStats().setPos(BackupDriverArray[x].getlastPos()); //sets value into the position slot 
                     }
 
@@ -107,7 +107,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                         String T = String.valueOf(DriverArray[x].getTDI().getStats().getT());
                         row[x][8] = T;
 
-                        for (int y = 0; y < 5; y++) {
+                        for (int y = 0; y < RacesArray.length; y++) {
                             if (DriverArray[x].getRaceInfo(y).getRaceName().equals("e")) {
                                 DriverArray[x].setRaceInfo(y, new indvInfo(RNTemp, RDTemp, temp)); 
                                 break;
@@ -135,10 +135,10 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                 String numRc = ""; 
                 String tempString = "";
                 double tempDouble =  0.0;
-                if ( racesCounter > 4) {
+                if ( racesCounter > (RacesArray.length - 1)) {
                     tf1.setText("YOU CANNOT ADD MORE RACES");
                 } else{
-                    for (int x = 0; x < 5; x++) {  
+                    for (int x = 0; x < RacesArray.length; x++) {  
                         if (RacesArray[x].getRN().equals("z")) {
                             RNTemp = "Grand Prix " + String.valueOf(racesCounter); 
                             RacesArray[x].setRN(RNTemp);
@@ -172,7 +172,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                         }
                     }   
 
-                    for (int x=0; x<12; x++){
+                    for (int x=0; x<DriverArray.length; x++){
                         BackupDriverArray[x].getTDI().getStats().setPos(BackupDriverArray[x].getlastPos()); 
                     }
 
@@ -199,7 +199,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
                         String T = String.valueOf(DriverArray[x].getTDI().getStats().getT());
                         row[x][8] = T;
 
-                        for (int y = 0; y < 5; y++) {
+                        for (int y = 0; y < RacesArray.length; y++) {
                             if (DriverArray[x].getRaceInfo(y).getRaceName().equals("e")) {
                                 DriverArray[x].setRaceInfo(y, new indvInfo(RNTemp, RDTemp, tempThree)); 
                                 break;
@@ -222,11 +222,11 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
             public void actionPerformed(ActionEvent e){  
                 drvName = tf1.getText();
                 String rcStat = "";
-                for (int x = 0; x < 12; x++){
+                for (int x = 0; x < DriverArray.length; x++){
                     if (DriverArray[x].getTDI().getDN().equals(drvName)) { //looks for a simmilar word stored into the array
                         tf1.setText(drvName + " has been selected.");
                         lableThree.setText("                                    " + drvName + "'s Statistics : ");
-                        for(int y = 0; y < 5; y++){
+                        for(int y = 0; y < RacesArray.length; y++){
                             if (!DriverArray[x].getRaceInfo(y).getRaceName().equals("e")){
                                 String name = DriverArray[x].getRaceInfo(y).getRaceName();
                                 String date = DriverArray[x].getRaceInfo(y).getDate();
@@ -266,7 +266,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
 
         textPanel.add(tf1);
         textPanelTwo.add(lableThree, BorderLayout.NORTH);
-        textPanelTwo.add(txtBox, BorderLayout.CENTER);
+        textPanelTwo.add(new JScrollPane(txtBox), BorderLayout.CENTER);
 
         TableOne.add(lableTwo, BorderLayout.NORTH);
         TableOne.add(new JScrollPane(Table), BorderLayout.CENTER);
@@ -301,7 +301,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
     //----------------------------------Extra Stuff]--------------------------------------------------------------------------------------------------------
 
     public static void cloneArray(){
-        for (int x=0; x<12; x++){
+        for (int x=0; x<DriverArray.length; x++){
             BackupDriverArray[x] = DriverArray[x]; //clones the array into a backup array to not tweak with the original array's values
         }
     }
@@ -358,7 +358,7 @@ public class ChampionshipManager extends Formula1ChampionshipManager{
             sortTwo();
         }
 
-        for (int x=0; x<12; x++){
+        for (int x=0; x<DriverArray.length; x++){
             BackupDriverArray[x].setlastPos(BackupDriverArray[x].getfirstPos()); 
         }
     }
